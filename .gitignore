@@ -77,3 +77,9 @@ jspm_packages/
 # IDE
 .vscode/
 .idea/
+
+# Documentation and test files (keep local but don't push)
+API_DOCUMENTATION.md
+BEGINNER_GUIDE.md
+test-api.js
+package-lock.json
