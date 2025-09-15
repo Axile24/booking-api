@@ -1,96 +1,96 @@
-# Bonz.ai Hotel Booking API
+# Bonz.ai Hotel Boknings-API
 
-A serverless booking API for Bonz.ai hotel built with AWS Lambda, API Gateway, and DynamoDB using Node.js.
+Ett serverless boknings-API för Bonz.ai hotell byggt med AWS Lambda, API Gateway och DynamoDB med Node.js.
 
-> **Based on**: [marafabiana/hotel-booking-api](https://github.com/marafabiana/hotel-booking-api.git) structure and implementation
+> **Baserat på**: [marafabiana/hotel-booking-api](https://github.com/marafabiana/hotel-booking-api.git) struktur och implementation
 
-## 🏨 About
+## Om projektet
 
-This API allows guests to create, read, update, and manage hotel room bookings. Built with a serverless architecture for automatic scaling and cost efficiency.
+Detta API låter gäster skapa, läsa, uppdatera och hantera hotellbokningar. Byggt med serverless arkitektur för automatisk skalning och kostnadseffektivitet.
 
-## 🚀 Features
+## Funktioner
 
-- **Room Management**: Support for 3 room types (Single, Double, Suite)
-- **Booking CRUD**: Create, read, update, and manage bookings
-- **Validation**: Comprehensive input validation and error handling
-- **Serverless**: AWS Lambda functions with automatic scaling
-- **Database**: DynamoDB for fast, scalable data storage
-- **CORS Support**: Ready for frontend integration
+- **Rumshantering**: Stöd för 3 rumstyper (Enkel, Dubbel, Svit)
+- **Boknings CRUD**: Skapa, läsa, uppdatera och hantera bokningar
+- **Validering**: Omfattande inputvalidering och felhantering
+- **Serverless**: AWS Lambda-funktioner med automatisk skalning
+- **Databas**: DynamoDB för snabb, skalbar datalagring
+- **CORS-stöd**: Redo för frontend-integration
 
-## 🏗️ Architecture
+## Arkitektur
 
-- **AWS Lambda**: Serverless compute functions
-- **API Gateway**: RESTful API endpoints
-- **DynamoDB**: NoSQL database for bookings
-- **Serverless Framework**: Infrastructure as code
+- **AWS Lambda**: Serverless beräkningsfunktioner
+- **API Gateway**: RESTful API-slutpunkter
+- **DynamoDB**: NoSQL-databas för bokningar
+- **Serverless Framework**: Infrastruktur som kod
 
-## 📋 Room Types & Pricing
+## Rumstyper och prissättning
 
-| Room Type | Max Guests | Price/Night |
-|-----------|------------|-------------|
-| Single    | 1          | 500 SEK     |
-| Double    | 2          | 1000 SEK    |
-| Suite     | 3          | 1500 SEK    |
+| Rumtyp | Max gäster | Pris/natt |
+|--------|------------|-----------|
+| Enkel  | 1          | 500 SEK   |
+| Dubbel | 2          | 1000 SEK  |
+| Svit   | 3          | 1500 SEK  |
 
-## 🛠️ Installation
+## Installation
 
-1. **Clone the repository**
+1. **Klona repository**
    ```bash
    git clone https://github.com/Axile24/booking-api.git
    cd booking-api
    ```
 
-2. **Install dependencies**
+2. **Installera beroenden**
    ```bash
    npm install
    ```
 
-3. **Install Serverless Framework globally**
+3. **Installera Serverless Framework globalt**
    ```bash
    npm install -g serverless
    ```
 
-4. **Configure AWS credentials**
+4. **Konfigurera AWS-uppgifter**
    ```bash
    serverless config credentials --provider aws --key YOUR_ACCESS_KEY --secret YOUR_SECRET_KEY
    ```
 
-## 🚀 Deployment
+## Deployment
 
-1. **Deploy to AWS**
+1. **Deploya till AWS**
    ```bash
    npm run deploy
    ```
 
-2. **Deploy to specific stage**
+2. **Deploya till specifik stage**
    ```bash
    serverless deploy --stage production
    ```
 
-3. **Remove deployment**
+3. **Ta bort deployment**
    ```bash
    npm run remove
    ```
 
-## 🧪 Local Development
+## Lokal utveckling
 
-1. **Start local server**
+1. **Starta lokal server**
    ```bash
    npm run offline
    ```
 
-2. **View logs**
+2. **Visa loggar**
    ```bash
    npm run logs
    ```
 
-## 📚 API Documentation
+## API-dokumentation
 
-See [API_DOCUMENTATION.md](./API_DOCUMENTATION.md) for detailed API reference.
+Se [API_DOCUMENTATION.md](./API_DOCUMENTATION.md) för detaljerad API-referens.
 
-### Quick Start Examples
+### Snabbstarts-exempel
 
-**Create a booking (matching marafabiana structure):**
+**Skapa en bokning (matchar marafabiana-struktur):**
 ```bash
 curl -X POST https://your-api-url.amazonaws.com/dev/bookings \
   -H "Content-Type: application/json" \
@@ -108,7 +108,7 @@ curl -X POST https://your-api-url.amazonaws.com/dev/bookings \
   }'
 ```
 
-**Response Structure:**
+**Svarsstruktur:**
 ```json
 {
   "data": {
@@ -129,75 +129,74 @@ curl -X POST https://your-api-url.amazonaws.com/dev/bookings \
 }
 ```
 
-**Get all bookings:**
+**Hämta alla bokningar:**
 ```bash
 curl https://your-api-url.amazonaws.com/dev/bookings
 ```
 
-**Get specific booking:**
+**Hämta specifik bokning:**
 ```bash
 curl https://your-api-url.amazonaws.com/dev/bookings/{booking-id}
 ```
 
-## 📁 Project Structure
+## Projektstruktur
 
 ```
 booking-api/
-├── functions/                 # Lambda function handlers
+├── functions/                 # Lambda-funktionshandlers
 │   ├── CreateBooking/
 │   ├── GetAllBookings/
 │   ├── GetBooking/
 │   └── UpdateBooking/
-├── services/                  # Business logic
+├── services/                  # Affärslogik
 │   ├── bookingService.js
 │   └── roomService.js
-├── responses/                 # API response utilities
-│   ├── apiResponse.js
-│   └── errorHandler.js
-├── serverless.yml            # Serverless configuration
-├── package.json              # Dependencies
-└── README.md                 # This file
+├── responses/                 # API-svarsverktyg
+│   └── index.js
+├── serverless.yml            # Serverless-konfiguration
+├── package.json              # Beroenden
+└── README.md                 # Denna fil
 ```
 
-## 🔧 Configuration
+## Konfiguration
 
-The API is configured through `serverless.yml`:
+API:et konfigureras genom `serverless.yml`:
 
-- **Region**: eu-north-1 (configurable)
+- **Region**: eu-north-1 (konfigurerbar)
 - **Runtime**: Node.js 18.x
-- **Database**: DynamoDB with pay-per-request billing
-- **CORS**: Enabled for all origins
+- **Databas**: DynamoDB med betala-per-begäran fakturering
+- **CORS**: Aktiverat för alla ursprung
 
-## 🐛 Error Handling
+## Felhantering
 
-The API includes comprehensive error handling for:
-- Input validation errors
-- DynamoDB connection issues
-- Invalid room configurations
-- Missing required fields
-- Email format validation
+API:et inkluderar omfattande felhantering för:
+- Inputvalideringsfel
+- DynamoDB-anslutningsproblem
+- Ogiltiga rumskonfigurationer
+- Saknade obligatoriska fält
+- E-postformatvalidering
 
-## 📝 Environment Variables
+## Miljövariabler
 
-- `BOOKINGS_TABLE`: DynamoDB table name (auto-generated)
+- `BOOKINGS_TABLE`: DynamoDB-tabellnamn (auto-genererat)
 
-## 🤝 Contributing
+## Bidrag
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+1. Forka repository
+2. Skapa en feature-branch
+3. Gör dina ändringar
+4. Testa grundligt
+5. Skicka in en pull request
 
-## 📄 License
+## Licens
 
-This project is licensed under the MIT License.
+Detta projekt är licensierad under MIT-licensen.
 
-## 👨‍💻 Author
+## Författare
 
 **Axile24** - [GitHub](https://github.com/Axile24)
 
-## 🔗 Links
+## Länkar
 
 - [Serverless Framework](https://www.serverless.com/)
 - [AWS Lambda](https://aws.amazon.com/lambda/)
