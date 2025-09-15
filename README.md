@@ -194,7 +194,8 @@ Detta projekt är licensierad under MIT-licensen.
 
 ## Författare
 
-**Axile24** - [GitHub](https://github.com/Axile24)
+**Axile24** - [GitHub](https://github.com/Axile24)  
+**Markiza** - [GitHub](https://github.com/Markiza)
 
 ## Länkar
 
