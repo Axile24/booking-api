@@ -4,23 +4,24 @@
 // This file sets up the connection to AWS DynamoDB
 // DynamoDB is Amazon's NoSQL database service
 
-const AWS = require('aws-sdk');  // AWS SDK for JavaScript
+// Importera AWS SDK för JavaScript
+const AWS = require('aws-sdk');
 
 // ========================================
-// AWS CONFIGURATION
+// AWS KONFIGURATION
 // ========================================
-// Tell AWS which region to use (where our database is located)
+// Berätta för AWS vilken region som ska användas (var vår databas finns)
 AWS.config.update({ 
-  region: process.env.AWS_REGION || 'eu-north-1'  // Use environment variable or default to eu-north-1
+  region: process.env.AWS_REGION || 'eu-north-1'  // Använd miljövariabel eller standard till eu-north-1
 });
 
 // ========================================
-// DYNAMODB CLIENT
+// DYNAMODB KLIENT
 // ========================================
-// Create a DynamoDB client that we can use to interact with the database
+// Skapa en DynamoDB-klient som vi kan använda för att interagera med databasen
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-// Export the database client so other files can use it
+// Exportera databas-klienten så andra filer kan använda den
 module.exports = {
-  db: dynamodb  // This is our database connection
+  db: dynamodb  // Detta är vår databasanslutning
 };

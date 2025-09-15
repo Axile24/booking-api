@@ -1,39 +1,40 @@
+// Definition av rumtyper med kapacitet och priser
 const ROOM_TYPES = {
   single: { 
-    maxGuests: 1,     // How many people can stay in this room
-    price: 500,       // Price per night in Swedish Krona (SEK)
+    maxGuests: 1,     // Hur många personer som kan bo i detta rum
+    price: 500,       // Pris per natt i svenska kronor (SEK)
     name: 'Single Room',
-    description: 'Perfect for solo travelers'
+    description: 'Perfekt för ensamresenärer'
   },
   double: { 
-    maxGuests: 2,     // 2 people can stay
-    price: 1000,      // 1000 SEK per night
+    maxGuests: 2,     // 2 personer kan bo här
+    price: 1000,      // 1000 SEK per natt
     name: 'Double Room',
-    description: 'Ideal for couples'
+    description: 'Idealt för par'
   },
   suite: { 
-    maxGuests: 3,     // 3 people can stay
-    price: 1500,      // 1500 SEK per night
+    maxGuests: 3,     // 3 personer kan bo här
+    price: 1500,      // 1500 SEK per natt
     name: 'Suite',
-    description: 'Luxury accommodation for families'
+    description: 'Lyxig boende för familjer'
   }
 };
 
-// Total number of rooms in the hotel
+// Totalt antal rum på hotellet
 const TOTAL_ROOMS = 20;
 
-// Simple mapping for room capacity (how many guests each room type can hold)
+// Enkel mappning för rumskapacitet (hur många gäster varje rumtyp kan rymma)
 const ROOM_TYPE_CAPACITY = {
-  single: 1,    // Single room = 1 guest
-  double: 2,    // Double room = 2 guests
-  suite: 3      // Suite = 3 guests
+  single: 1,    // Enkelrum = 1 gäst
+  double: 2,    // Dubbelrum = 2 gäster
+  suite: 3      // Svit = 3 gäster
 };
 
-// Simple mapping for room pricing (cost per night)
+// Enkel mappning för rumprissättning (kostnad per natt)
 const ROOM_TYPE_COST = {
-  single: 500,   // 500 SEK per night
-  double: 1000,  // 1000 SEK per night
-  suite: 1500    // 1500 SEK per night
+  single: 500,   // 500 SEK per natt
+  double: 1000,  // 1000 SEK per natt
+  suite: 1500    // 1500 SEK per natt
 };
 
 
