@@ -1,17 +1,3 @@
-// ========================================
-// ROOM SERVICE
-// ========================================
-// This file handles all room-related logic:
-// - Room types and their capacities
-// - Room pricing
-// - Date validation
-// - Cost calculations
-
-// ========================================
-// ROOM CONFIGURATION
-// ========================================
-// Define the different types of rooms available at the hotel
-
 const ROOM_TYPES = {
   single: { 
     maxGuests: 1,     // How many people can stay in this room
