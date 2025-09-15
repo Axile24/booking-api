@@ -1,0 +1,23 @@
+{
+  "name": "booking-api",
+  "version": "1.0.0",
+  "description": "Bonz.ai Hotel Booking API - Serverless with AWS Lambda and DynamoDB",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "serverless deploy",
+    "remove": "serverless remove",
+    "logs": "serverless logs -f",
+    "offline": "serverless offline"
+  },
+  "keywords": ["serverless", "aws", "lambda", "dynamodb", "booking", "hotel"],
+  "author": "Axile24",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.1490.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "serverless": "^3.38.0",
+    "serverless-offline": "^13.3.0"
+  }
+}
