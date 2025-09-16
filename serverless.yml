@@ -11,17 +11,22 @@ provider:
   environment:
     BOOKINGS_TABLE: bookings
   
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - dynamodb:Query
-        - dynamodb:Scan
-        - dynamodb:GetItem
-        - dynamodb:PutItem
-        - dynamodb:UpdateItem
-        - dynamodb:DeleteItem
-      Resource:
-        - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.BOOKINGS_TABLE}"
+  provider:
+  name: aws
+  # ... andra inställningar
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.BOOKINGS_TABLE}"
 
 functions:
   # Create a new booking
@@ -65,7 +70,7 @@ resources:
     BookingsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: bookings
+        TableName: ${self:provider.environment.BOOKINGS_TABLE}
         AttributeDefinitions:
           - AttributeName: bookingId
             AttributeType: S
