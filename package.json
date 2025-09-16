@@ -7,7 +7,7 @@
     "deploy": "serverless deploy",
     "remove": "serverless remove",
     "logs": "serverless logs -f",
-    "offline": "serverless offline"
+    "offline": "serverless offline start --reloadHandler"
   },
   "keywords": ["serverless", "aws", "lambda", "dynamodb", "booking", "hotel"],
   "author": "Axile24",
