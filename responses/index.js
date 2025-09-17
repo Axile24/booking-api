@@ -35,8 +35,4 @@ function sendError(statusCode, message, error = null) {
 module.exports = {
   sendResponse,  // Funktion för att skicka framgångsrika svar
   sendError      // Funktion för att skicka felmeddelanden
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> 3bca9fc249bd724be58b61d76f8464d7f8ea7459

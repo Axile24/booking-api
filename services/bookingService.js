@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 const { v4: uuidv4 } = require("uuid");
 const { db } = require("./db"); // Importera databasanslutningen
 const {
@@ -108,9 +108,6 @@ module.exports = {
     getAllBookings,
     getBookingById,
     updateBooking
-    // lägg till andra funktioner här
-=======
-// Booking service - handles booking business logic and validation
 
 const AWS = require('aws-sdk');
 const { v4: uuidv4 } = require('uuid');
@@ -401,6 +398,4 @@ module.exports = {
   getAllBookings,
   getBookingById,
   updateBooking,
-  checkRoomAvailability
->>>>>>> 3bca9fc249bd724be58b61d76f8464d7f8ea7459
 };

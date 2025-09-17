@@ -1,4 +1,4 @@
-# Bonz.ai Hotel Boknings-API
+# Hotel Boknings-API
 
 Ett serverless boknings-API för Bonz.ai hotell byggt med AWS Lambda, API Gateway och DynamoDB med Node.js.
 ## Om projektet
@@ -7,21 +7,21 @@ Detta API låter gäster skapa, läsa, uppdatera och hantera hotellbokningar. By
 
 ## Funktioner
 
-- **Rumshantering**: Stöd för 3 rumstyper (Enkel, Dubbel, Svit)
-- **Boknings CRUD**: Skapa, läsa, uppdatera och hantera bokningar
-- **Validering**: Omfattande inputvalidering och felhantering
-- **Serverless**: AWS Lambda-funktioner med automatisk skalning
-- **Databas**: DynamoDB för snabb, skalbar datalagring
-- **CORS-stöd**: Redo för frontend-integration
+- Rumshantering**: Stöd för 3 rumstyper (Enkel, Dubbel, Svit)
+- Boknings CRUD**: Skapa, läsa, uppdatera och hantera bokningar
+- Validering**: Omfattande inputvalidering och felhantering
+- Serverless**: AWS Lambda-funktioner med automatisk skalning
+- Databas**: DynamoDB för snabb, skalbar datalagring
+- CORS-stöd**: Redo för frontend-integration
 
-## Arkitektur
+## Syftet är att använda: 
 
 - **AWS Lambda**: Serverless beräkningsfunktioner
 - **API Gateway**: RESTful API-slutpunkter
 - **DynamoDB**: NoSQL-databas för bokningar
 - **Serverless Framework**: Infrastruktur som kod
 
-## Rumstyper och prissättning
+Rumstyper och prissättning
 
 | Rumtyp | Max gäster | Pris/natt |
 |--------|------------|-----------|
@@ -81,13 +81,9 @@ Detta API låter gäster skapa, läsa, uppdatera och hantera hotellbokningar. By
    npm run logs
    ```
 
-## API-dokumentation
 
-Se [API_DOCUMENTATION.md](./API_DOCUMENTATION.md) för detaljerad API-referens.
 
-### Snabbstarts-exempel
 
-**Skapa en bokning (matchar marafabiana-struktur):**
 ```bash
 curl -X POST https://your-api-url.amazonaws.com/dev/bookings \
   -H "Content-Type: application/json" \
@@ -105,7 +101,7 @@ curl -X POST https://your-api-url.amazonaws.com/dev/bookings \
   }'
 ```
 
-**Svarsstruktur:**
+Svars
 ```json
 {
   "data": {
@@ -126,12 +122,12 @@ curl -X POST https://your-api-url.amazonaws.com/dev/bookings \
 }
 ```
 
-**Hämta alla bokningar:**
+Hämta alla bokningar:**
 ```bash
 curl https://your-api-url.amazonaws.com/dev/bookings
 ```
 
-**Hämta specifik bokning:**
+Hämta specifik bokning:**
 ```bash
 curl https://your-api-url.amazonaws.com/dev/bookings/{booking-id}
 ```
@@ -175,28 +171,11 @@ API:et inkluderar omfattande felhantering för:
 
 ## Miljövariabler
 
-- `BOOKINGS_TABLE`: DynamoDB-tabellnamn (auto-genererat)
+- `BOOKINGS_TABLE`: DynamoDB-tabellnamn 
 
-## Bidrag
 
-1. Forka repository
-2. Skapa en feature-branch
-3. Gör dina ändringar
-4. Testa grundligt
-5. Skicka in en pull request
 
-## Licens
-
-Detta projekt är licensierad under MIT-licensen.
-
-## Författare
 
 **Axile24** - [GitHub](https://github.com/Axile24)  
 **Markiza** - [GitHub](https://github.com/Markiza)
 
-## Länkar
-
-- [Serverless Framework](https://www.serverless.com/)
-- [AWS Lambda](https://aws.amazon.com/lambda/)
-- [DynamoDB](https://aws.amazon.com/dynamodb/)
-- [API Gateway](https://aws.amazon.com/api-gateway/)

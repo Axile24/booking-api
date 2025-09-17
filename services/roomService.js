@@ -38,9 +38,9 @@ const ROOM_TYPE_COST = {
 };
 
 
-// ========================================
+
 // ROOM VALIDATION FUNCTIONS
-// ========================================
+
 
 // Check if a room booking is valid (for the old rooms array format)
 function validateRoomBooking(rooms, totalGuests) {
@@ -95,9 +95,9 @@ function validateRoomBooking(rooms, totalGuests) {
 }
 
 
-// ========================================
+
 // DATE VALIDATION
-// ========================================
+
 
 // Check if the check-in and check-out dates are valid
 function validateDates(checkIn, checkOut) {
@@ -134,9 +134,9 @@ function validateDates(checkIn, checkOut) {
   return true;
 }
 
-// ========================================
+
 // COST CALCULATION
-// ========================================
+
 
 // Calculate how many nights the guest is staying
 function calculateNights(checkIn, checkOut) {
@@ -177,9 +177,8 @@ function calculateCostByNights(roomTypes, checkIn, checkOut) {
   return totalCost;
 }
 
-// ========================================
 // ROOM CAPACITY VALIDATION
-// ========================================
+
 
 // Check if the number of guests matches the room capacity (for roomTypes format)
 function validateBookingWithRoomTypes(guests, roomTypes) {
@@ -220,8 +219,4 @@ module.exports = {
   ROOM_TYPE_CAPACITY,
   ROOM_TYPE_COST,
   TOTAL_ROOMS
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> 3bca9fc249bd724be58b61d76f8464d7f8ea7459

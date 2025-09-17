@@ -89,8 +89,4 @@ module.exports.handler = async (event) => {
     console.error('Error updating booking:', error);
     return sendError(500, "Failed to update booking");
   }
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> 3bca9fc249bd724be58b61d76f8464d7f8ea7459
