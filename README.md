@@ -1,6 +1,7 @@
-# 🏨 Hotel Booking API
+Hotel Booking API
 
 A simple serverless API for managing hotel bookings, built with AWS Lambda and DynamoDB.
+
 
 
 - Serverless 
@@ -15,10 +16,7 @@ A simple serverless API for managing hotel bookings, built with AWS Lambda and D
 - **Update** existing bookings
 
 Structure
-
-
-
-## 🛠️ Setup & Installation
+Setup & Installation
 
 1. **Install dependencies:**
    ```bash
@@ -35,7 +33,7 @@ Structure
    npm run offline
    ```
 
-## 📡 API Endpoints
+API Endpoints
 
 
 | POST | `/bookings` | Create a new booking |
@@ -43,14 +41,6 @@ Structure
 | GET | `/bookings/{id}` | Get specific booking |
 | PUT | `/bookings/{id}` | Update booking |
 
-
- Room Types
-
-| Type | Max Guests | Price/Night |
-|------|------------|-------------|
-| single | 1 | 500 SEK |
-| double | 2 | 1000 SEK |
-| suite | 3 | 1500 SEK |
 
 ```bash create B
 curl -X POST https://your-api-url/bookings \
@@ -65,12 +55,43 @@ curl -X POST https://your-api-url/bookings \
   }'
 ```
 
-### Get All Bookings
-```bash
-curl https:///bookings
-```
+URL:
+https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev
 
-## 🔧 Development
+POST https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings
+GET https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings/{id}
+PUT https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings/{id}
+
+Curl curl -X POST https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings \
+  -H "Content-Type: application/json" \
+  -d '{
+    "guests": 2,
+    "roomTypes": {"double": 1},
+    "checkIn": "2025-12-20",
+    "checkOut": "2025-12-22",
+    "guestName": "Test User",
+    "email": "test@example.com"
+  }'
+
+  curl https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings 
+  url -X POST https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings -H "Content-Type: application/json" -d '{"guests": 2, "roomTypes": {"double": 1}, "checkIn": "2025-12-20", "checkOut": "2025-12-22", "guestName": "AWS Test User", "email": "awstest@example.com"}'
+  curl https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings
+  $ curl -X POST https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings -H "Content-Type: application/json" -d '{"guests": 2, "roomTypes": {"double": 1}, "checkIn": "2025-12-20", "checkOut": "2025-12-22", "guestName": "AWS Test User", "email": "awstest@example.com"}'
+   curl https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings
+   curl https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings/3caaa969-97c5-4ae8-b29a-9f4982cdce55
+
+   
+   https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings/3caaa969-97c5-4ae8-b29a-9f4982cdce55
+    curl "https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings/3caaa969-97c5-4ae8-b29a-9f4982cdce55"
+    
+   
+   
+
+
+
+   Tester i browsern 
+   ttps://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings
+   https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings
 
 - **Framework:** Serverless Framework
 - **Runtime:** Node.js 20.x
