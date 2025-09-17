@@ -1,9 +1,6 @@
 # Bonz.ai Hotel Boknings-API
 
 Ett serverless boknings-API för Bonz.ai hotell byggt med AWS Lambda, API Gateway och DynamoDB med Node.js.
-
-> **Baserat på**: [marafabiana/hotel-booking-api](https://github.com/marafabiana/hotel-booking-api.git) struktur och implementation
-
 ## Om projektet
 
 Detta API låter gäster skapa, läsa, uppdatera och hantera hotellbokningar. Byggt med serverless arkitektur för automatisk skalning och kostnadseffektivitet.
