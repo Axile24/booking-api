@@ -1,0 +1,81 @@
+service: booking-api 
+
+frameworkVersion: '4' 
+
+provider: 
+  name: aws 
+  runtime: nodejs20.x   # Använder Node.js 20.x som runtime
+  stage: ${opt:stage, 'dev'} 
+  region: ${opt:region, 'eu-north-1'} 
+  
+  environment: 
+    BOOKINGS_TABLE: bookings 
+  
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.BOOKINGS_TABLE}"
+
+
+functions: 
+  # Create a new booking 
+  createBooking: 
+    handler: functions/CreateBooking/handler.handler 
+    events: 
+      - http: 
+          path: /bookings 
+          method: post 
+          cors: true 
+
+  # Get all bookings 
+  getAllBookings: 
+    handler: functions/GetAllBookings/handler.handler 
+    events: 
+      - http: 
+          path: /bookings 
+          method: get 
+          cors: true 
+
+  # Get a specific booking by ID 
+  getBooking: 
+    handler: functions/GetBooking/handler.handler 
+    events: 
+      - http: 
+          path: /bookings/{id} 
+          method: get 
+          cors: true 
+
+  # Update a booking 
+  updateBooking: 
+    handler: functions/UpdateBooking/handler.handler 
+    events: 
+      - http: 
+          path: /bookings/{id} 
+          method: put 
+          cors: true 
+
+resources: 
+  Resources: 
+    BookingsTable: 
+      Type: AWS::DynamoDB::Table 
+      Properties: 
+        TableName:  ${self:provider.environment.BOOKINGS_TABLE}
+        AttributeDefinitions: 
+          - AttributeName: bookingId 
+            AttributeType: S 
+        KeySchema: 
+          - AttributeName: bookingId 
+            KeyType: HASH 
+        BillingMode: PAY_PER_REQUEST 
+
+plugins: 
+  - serverless-offline

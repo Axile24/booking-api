@@ -1,0 +1,28 @@
+{
+  "name": "booking-api",
+  "version": "1.0.0",
+  "description": "- aws  : serverless api , lambda funktioner , DynamoDB\r https://docs.google.com/document/d/1_IIGETUjO9TpE43ygxxVj7q-0unl06_Vk4edgYd7dnA/edit?usp=sharing",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "serverless deploy",
+    "offline": "serverless offline start",
+    "remove": "serverless remove",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Axile24/booking-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Axile24/booking-api/issues"
+  },
+  "homepage": "https://github.com/Axile24/booking-api#readme",
+  "dependencies": {
+    "serverless": "^3.0.0",
+    "serverless-offline": "^13.3.0"
+  }
+}

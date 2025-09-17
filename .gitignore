@@ -1,0 +1,12 @@
+# Dependencies
+node_modules/
+# Serverless directories
+.serverless/
+# DynamoDB Local files
+.dynamodb/
+# IDE
+.vscode/
+# Runtime data
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
