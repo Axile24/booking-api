@@ -2,10 +2,13 @@
 const { v4: uuidv4 } = require("uuid"); // För att generera unika ID:n
 const { sendResponse, sendError } = require("../../responses"); // För att skicka svar
 const { db } = require("../../services/db"); // För databasoperationer
+
+
 const { 
   validateDates, 
   validateBookingWithRoomTypes, 
   calculateCostByNights,
+
   TOTAL_ROOMS 
 } = require("../../services/roomService"); // För rum-validering och prissättning
 
