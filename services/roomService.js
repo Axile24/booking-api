@@ -220,4 +220,8 @@ module.exports = {
   ROOM_TYPE_CAPACITY,
   ROOM_TYPE_COST,
   TOTAL_ROOMS
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> 3bca9fc249bd724be58b61d76f8464d7f8ea7459
