@@ -29,7 +29,7 @@ functions:
     handler: functions/CreateBooking/handler.handler
     events:
       - http:
-          path: /bookings
+          path: bookings
           method: post
           cors: true
 
@@ -38,7 +38,7 @@ functions:
     handler: functions/GetAllBookings/handler.handler
     events:
       - http:
-          path: /bookings
+          path: bookings
           method: get
           cors: true
 
@@ -47,7 +47,7 @@ functions:
     handler: functions/GetBooking/handler.handler
     events:
       - http:
-          path: /bookings/{id}
+          path: bookings/{id}
           method: get
           cors: true
 
@@ -56,7 +56,7 @@ functions:
     handler: functions/UpdateBooking/handler.handler
     events:
       - http:
-          path: /bookings/{id}
+          path: bookings/{id}
           method: put
           cors: true
 
