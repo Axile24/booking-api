@@ -46,6 +46,7 @@ module.exports.handler = async (event) => {
     let expressionAttributeValues = {
       ':updatedAt': new Date().toISOString()
     };
+    let expressionAttributeNames = {};
     
     // Add fields to update if they are provided in the request
     if (body.guestName) {
@@ -89,12 +90,13 @@ module.exports.handler = async (event) => {
       if (!validStatuses.includes(body.status)) {
         return sendError(400, `Invalid status. Must be one of: ${validStatuses.join(', ')}`);
       }
-      updateExpression += ', status = :status';
+      updateExpression += ', #status = :status';
+      expressionAttributeNames['#status'] = 'status';
       expressionAttributeValues[':status'] = body.status;
     }
     
     // Update the booking in DynamoDB
-    const result = await db.update({
+    const updateParams = {
       TableName: process.env.BOOKINGS_TABLE || "hotel-bookings-axile",
       Key: {
         bookingId: bookingId
@@ -102,7 +104,14 @@ module.exports.handler = async (event) => {
       UpdateExpression: updateExpression,
       ExpressionAttributeValues: expressionAttributeValues,
       ReturnValues: 'ALL_NEW'  // Return the updated booking
-    }).promise();
+    };
+    
+    // Only add ExpressionAttributeNames if we have any
+    if (Object.keys(expressionAttributeNames).length > 0) {
+      updateParams.ExpressionAttributeNames = expressionAttributeNames;
+    }
+    
+    const result = await db.update(updateParams).promise();
     
     console.log("Booking updated successfully");
     
