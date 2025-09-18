@@ -1,0 +1,252 @@
+{
+  "info": {
+    "name": "api-tests",
+    "description": "Hotel Booking API Test Collection - Complete API testing suite",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Booking",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"guests\": 2,\n  \"roomTypes\": {\n    \"double\": 1\n  },\n  \"guestName\": \"Test User\",\n  \"email\": \"test@example.com\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/bookings",
+          "host": ["{{base_url}}"],
+          "path": ["bookings"]
+        },
+        "description": "Create a new hotel booking"
+      },
+      "response": []
+    },
+    {
+      "name": "Create Booking with Dates",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"guests\": 3,\n  \"roomTypes\": {\n    \"suite\": 1\n  },\n  \"guestName\": \"Family Johnson\",\n  \"email\": \"family@example.com\",\n  \"checkIn\": \"2025-12-25\",\n  \"checkOut\": \"2025-12-28\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/bookings",
+          "host": ["{{base_url}}"],
+          "path": ["bookings"]
+        },
+        "description": "Create a booking with check-in and check-out dates"
+      },
+      "response": []
+    },
+    {
+      "name": "Create Single Room Booking",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"guests\": 1,\n  \"roomTypes\": {\n    \"single\": 1\n  },\n  \"guestName\": \"Alice Smith\",\n  \"email\": \"alice@example.com\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/bookings",
+          "host": ["{{base_url}}"],
+          "path": ["bookings"]
+        },
+        "description": "Create a single room booking"
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Bookings",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/bookings",
+          "host": ["{{base_url}}"],
+          "path": ["bookings"]
+        },
+        "description": "Retrieve all bookings from the database"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Specific Booking",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/bookings/{{booking_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["bookings", "{{booking_id}}"]
+        },
+        "description": "Get a specific booking by ID"
+      },
+      "response": []
+    },
+    {
+      "name": "Update Booking Status",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"cancelled\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/bookings/{{booking_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["bookings", "{{booking_id}}"]
+        },
+        "description": "Update booking status to cancelled"
+      },
+      "response": []
+    },
+    {
+      "name": "Update Booking to Confirmed",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"confirmed\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/bookings/{{booking_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["bookings", "{{booking_id}}"]
+        },
+        "description": "Update booking status to confirmed"
+      },
+      "response": []
+    },
+    {
+      "name": "Update Booking to Completed",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"completed\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/bookings/{{booking_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["bookings", "{{booking_id}}"]
+        },
+        "description": "Update booking status to completed"
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Booking",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/bookings/{{booking_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["bookings", "{{booking_id}}"]
+        },
+        "description": "Delete a booking by ID"
+      },
+      "response": []
+    },
+    {
+      "name": "Test Missing Fields",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"guests\": 2\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/bookings",
+          "host": ["{{base_url}}"],
+          "path": ["bookings"]
+        },
+        "description": "Test error handling for missing required fields"
+      },
+      "response": []
+    },
+    {
+      "name": "Test Invalid Booking ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/bookings/invalid-id",
+          "host": ["{{base_url}}"],
+          "path": ["bookings", "invalid-id"]
+        },
+        "description": "Test error handling for invalid booking ID"
+      },
+      "response": []
+    },
+    {
+      "name": "Test Missing Booking ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/bookings/",
+          "host": ["{{base_url}}"],
+          "path": ["bookings", ""]
+        },
+        "description": "Test error handling for missing booking ID"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev",
+      "description": "Base URL for the Hotel Booking API"
+    },
+    {
+      "key": "booking_id",
+      "value": "51573669-4098-4657-bfac-1db50717110a",
+      "description": "Sample booking ID for testing"
+    }
+  ]
+}

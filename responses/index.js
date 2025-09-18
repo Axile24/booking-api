@@ -1,44 +1,24 @@
-/**
- * Response Helper Functions
- * These functions help format API responses consistently
- * Perfect for beginners to understand how API responses work
- */
-
-// Function to send successful responses
+// Enkla response funktioner
 function sendResponse(data, statusCode = 200) {
   return {
-    statusCode,  // HTTP status code (200 = OK, 201 = Created, etc.)
+    statusCode,
     headers: {
-      'Content-Type': 'application/json',  // Tell the browser this is JSON data
-      'Access-Control-Allow-Origin': '*',  // Allow requests from any website (CORS)
-      'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
-      'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS'
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
     },
-    body: JSON.stringify({  // Convert data to JSON string
-      data: data  // Wrap data in a "data" object
-    })
+    body: JSON.stringify({ data })
   };
 }
 
-// Function to send error responses
-function sendError(statusCode, message, error = null) {
+function sendError(statusCode, message) {
   return {
-    statusCode,  // HTTP status code (400 = Bad Request, 500 = Server Error, etc.)
+    statusCode,
     headers: {
-      'Content-Type': 'application/json',  // Tell the browser this is JSON data
-      'Access-Control-Allow-Origin': '*',  // Allow requests from any website (CORS)
-      'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
-      'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS'
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
     },
-    body: JSON.stringify({  // Convert error message to JSON string
-      error: message,  // Main error message
-      ...(error && { details: error })  // Additional error information if available
-    })
+    body: JSON.stringify({ error: message })
   };
 }
 
-// Export functions so other files can use them
-module.exports = {
-  sendResponse,  // Function to send successful responses
-  sendError      // Function to send error messages
-};
+module.exports = { sendResponse, sendError };

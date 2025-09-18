@@ -69,6 +69,15 @@ functions:
           method: put
           cors: true
 
+  # Delete a booking
+  deleteBooking:
+    handler: functions/DeleteBooking/handler.handler
+    events:
+      - http:
+          path: /bookings/{id}
+          method: delete
+          cors: true
+
 # AWS Resources (DynamoDB table)
 resources:
   Resources:

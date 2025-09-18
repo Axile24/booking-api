@@ -1,4 +1,4 @@
-// Uppdatera bokning - enkel kod
+// Ta bort en bokning - enkel kod
 const { sendResponse, sendError } = require("../../responses");
 const { db } = require("../../services/db");
 
@@ -12,26 +12,22 @@ module.exports.handler = async (event) => {
       return sendError(400, "ID saknas");
     }
     
-    // Hämta data från request
-    const body = JSON.parse(event.body || '{}');
-    
-    // Uppdatera bokning i databas
+    // Ta bort från databas
     const tableName = process.env.BOOKINGS_TABLE || "hotel-bookings-axile";
-    const result = await db.update({
+    const result = await db.delete({
       TableName: tableName,
       Key: { bookingId: id },
-      UpdateExpression: 'SET #status = :status, updatedAt = :updatedAt',
-      ExpressionAttributeNames: { '#status': 'status' },
-      ExpressionAttributeValues: {
-        ':status': body.status || 'confirmed',
-        ':updatedAt': new Date().toISOString()
-      },
-      ReturnValues: 'ALL_NEW'
+      ReturnValues: 'ALL_OLD'
     }).promise();
     
-    // Skicka tillbaka uppdaterad bokning
+    // Kontrollera om bokning fanns
+    if (!result.Attributes) {
+      return sendError(404, "Bokning hittades inte");
+    }
+    
+    // Skicka tillbaka bekräftelse
     return sendResponse({
-      message: "Bokning uppdaterad",
+      message: "Bokning borttagen",
       booking: result.Attributes
     });
     
