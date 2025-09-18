@@ -1,19 +1,28 @@
-# Bonz.ai Hotel Boknings-API
+# Hotel Booking API
 
-Ett serverless boknings-API för Bonz.ai hotell byggt med AWS Lambda, API Gateway och DynamoDB med Node.js.
+A simple serverless API for managing hotel bookings, built with AWS Lambda and DynamoDB.
 
 ## Om projektet
 
-Detta API låter gäster skapa, läsa, uppdatera och hantera hotellbokningar. Byggt med serverless arkitektur för automatisk skalning och kostnadseffektivitet.
+Detta projekt är en enkel serverless API för att hantera hotellbokningar.
 
-## Funktioner
+- Serverless
+- AWS Lambda functions
+- DynamoDB database
+- REST API design
+- JavaScript/Node.js
 
-- **Rumshantering**: Stöd för 3 rumstyper (Enkel, Dubbel, Svit)
-- **Boknings CRUD**: Skapa, läsa, uppdatera och hantera bokningar
-- **Validering**: Omfattande inputvalidering och felhantering
-- **Serverless**: AWS Lambda-funktioner med automatisk skalning
-- **Databas**: DynamoDB för snabb, skalbar datalagring
-- **CORS-stöd**: Redo för frontend-integration
+- **Create** new hotel bookings
+- **View** all bookings
+- **Get** a specific booking by ID
+- **Update** existing bookings
+
+Funktioner:
+- **Create** new hotel bookings
+- **View** all bookings
+- **Get** a specific booking by ID
+- **Update** existing bookings
+- **Delete** existing bookings
 
 ## Arkitektur
 
@@ -35,161 +44,80 @@ Detta API låter gäster skapa, läsa, uppdatera och hantera hotellbokningar. By
    npm install
    ```
 
-3. **Installera Serverless Framework globalt**
-   ```bash
-   npm install -g serverless
-   ```
-
-4. **Konfigurera AWS-uppgifter**
-   ```bash
-   serverless config credentials --provider aws --key YOUR_ACCESS_KEY --secret YOUR_SECRET_KEY
-   ```
-
-## Deployment
-
-1. **Deploya till AWS**
+2. **Deploy to AWS:**
    ```bash
    npm run deploy
    ```
 
-2. **Deploya till specifik stage**
-   ```bash
-   serverless deploy --stage production
-   ```
-
-3. **Ta bort deployment**
-   ```bash
-   npm run remove
-   ```
-
-## Lokal utveckling
-
-1. **Starta lokal server**
+3. **Test :**
    ```bash
    npm run offline
    ```
 
-2. **Visa loggar**
-   ```bash
-   npm run logs
-   ```
+API Endpoints
 
-## API-dokumentation
 
-Se [API_DOCUMENTATION.md](./API_DOCUMENTATION.md) för detaljerad API-referens.
+|  POST    | `/bookings`      | Create a new booking |
+|  GET     | `/bookings`      | Get all bookings     |
+|  GET     | `/bookings/{id}` | Get specific booking |
+|  PUT     | `/bookings/{id}` | Update booking       |
+|  DELETE  | `/bookings/{id}` | Ta bort en booking   |
 
-### Snabbstarts-exempel
 
-**Skapa en bokning (matchar marafabiana-struktur):**
-```bash
-curl -X POST https://your-api-url.amazonaws.com/dev/bookings \
+```bash create B
+curl -X POST https://your-api-url/bookings \
   -H "Content-Type: application/json" \
   -d '{
-    "guests": 10,
-    "roomTypes": {
-      "suite": 2,
-      "double": 1,
-      "single": 2
-    },
-    "checkIn": "2024-12-27",
-    "checkOut": "2026-12-28",
-    "guestName": "King Julien",
-    "email": "king.julien@example.com"
+    "guests": 2,
+    "roomTypes": {"double": 1},
+    "checkIn": "2025-02-15",
+    "checkOut": "2025-02-17",
+    "guestName": "John Doe",
+    "email": "john@example.com"
   }'
 ```
 
-**Svarsstruktur:**
-```json
-{
-  "data": {
-    "message": "Booking created successfully!",
-    "bookingId": "8090cd5b-f356-4b2b-9192-da892e86be79",
-    "guests": 10,
-    "totalRooms": 5,
-    "roomTypes": {
-      "suite": 2,
-      "double": 1,
-      "single": 2
-    },
-    "checkIn": "2024-12-27",
-    "checkOut": "2026-12-28",
-    "guestName": "King Julien",
-    "totalCost": 3655000
-  }
-}
-```
+URL:
+https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev
 
-**Hämta alla bokningar:**
-```bash
-curl https://your-api-url.amazonaws.com/dev/bookings
-```
+POST https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings
+GET https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings/{id}
+PUT https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings/{id}
 
-**Hämta specifik bokning:**
-```bash
-curl https://your-api-url.amazonaws.com/dev/bookings/{booking-id}
-```
+Curl curl -X POST https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings \
+  -H "Content-Type: application/json" \
+  -d '{
+    "guests": 2,
+    "roomTypes": {"double": 1},
+    "checkIn": "2025-12-20",
+    "checkOut": "2025-12-22",
+    "guestName": "Test User",
+    "email": "test@example.com"
+  }'
 
-## Projektstruktur
+  curl https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings 
+  url -X POST https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings -H "Content-Type: application/json" -d '{"guests": 2, "roomTypes": {"double": 1}, "checkIn": "2025-12-20", "checkOut": "2025-12-22", "guestName": "AWS Test User", "email": "awstest@example.com"}'
+  curl https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings
+  $ curl -X POST https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings -H "Content-Type: application/json" -d '{"guests": 2, "roomTypes": {"double": 1}, "checkIn": "2025-12-20", "checkOut": "2025-12-22", "guestName": "AWS Test User", "email": "awstest@example.com"}'
+   curl https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings
+   curl https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings/3caaa969-97c5-4ae8-b29a-9f4982cdce55
 
-```
-booking-api/
-├── functions/                 # Lambda-funktionshandlers
-│   ├── CreateBooking/
-│   ├── GetAllBookings/
-│   ├── GetBooking/
-│   └── UpdateBooking/
-├── services/                  # Affärslogik
-│   ├── bookingService.js
-│   └── roomService.js
-├── responses/                 # API-svarsverktyg
-│   └── index.js
-├── serverless.yml            # Serverless-konfiguration
-├── package.json              # Beroenden
-└── README.md                 # Denna fil
-```
+   
+   https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings/3caaa969-97c5-4ae8-b29a-9f4982cdce55
+    curl "https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings/3caaa969-97c5-4ae8-b29a-9f4982cdce55"
+    
+   
+   
 
-## Konfiguration
 
-API:et konfigureras genom `serverless.yml`:
 
-- **Region**: eu-north-1 (konfigurerbar)
-- **Runtime**: Node.js 18.x
-- **Databas**: DynamoDB med betala-per-begäran fakturering
-- **CORS**: Aktiverat för alla ursprung
+   Tester i browsern 
+   ttps://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings
+   https://r3xabxjpa5.execute-api.eu-north-1.amazonaws.com/dev/bookings
 
-## Felhantering
+- **Framework:** Serverless Framework
+- **Runtime:** Node.js 20.x
+- **Database:** AWS DynamoDB
+- **Deployment:** AWS Lambda + API Gateway
 
-API:et inkluderar omfattande felhantering för:
-- Inputvalideringsfel
-- DynamoDB-anslutningsproblem
-- Ogiltiga rumskonfigurationer
-- Saknade obligatoriska fält
-- E-postformatvalidering
 
-## Miljövariabler
-
-- `BOOKINGS_TABLE`: DynamoDB-tabellnamn (auto-genererat)
-
-## Bidrag
-
-1. Forka repository
-2. Skapa en feature-branch
-3. Gör dina ändringar
-4. Testa grundligt
-5. Skicka in en pull request
-
-## Licens
-
-Detta projekt är licensierad under MIT-licensen.
-
-## Författare
-
-**Axile24** - [GitHub](https://github.com/Axile24)  
-**Markiza** - [GitHub](https://github.com/Markiza)
-
-## Länkar
-
-- [Serverless Framework](https://www.serverless.com/)
-- [AWS Lambda](https://aws.amazon.com/lambda/)
-- [DynamoDB](https://aws.amazon.com/dynamodb/)
-- [API Gateway](https://aws.amazon.com/api-gateway/)

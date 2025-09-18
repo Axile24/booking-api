@@ -1,118 +1,100 @@
-// Importera nödvändiga bibliotek
-<<<<<<< HEAD
+/**
+ * Create Booking Handler
+ * This function creates a new hotel booking
+ * Perfect for beginners to understand how API endpoints work
+ */
+
+const { v4: uuidv4 } = require("uuid");
 const { sendResponse, sendError } = require("../../responses");
-const { createBooking } = require("../../services/bookingService");
+const { db } = require("../../services/db");
 
-// Huvudfunktion som hanterar skapande av bokningar
 module.exports.handler = async (event) => {
   try {
-    const bookingData = JSON.parse(event.body);
+    // 1. Get data from the request
+    const body = JSON.parse(event.body);
+    const { guests, roomTypes, checkIn, checkOut, guestName, email } = body;
 
-    // All logik flyttas till services-lagret
-    const newBooking = await createBooking(bookingData);
-
-    return sendResponse(201, {
-      message: "Booking created successfully!",
-      booking: newBooking,
-    });
-  } catch (error) {
-    console.error("Error creating booking:", error);
-
-    // Hantera specifika felmeddelanden
-    if (error.message === "Invalid input" || error.message === "Not enough rooms available") {
-      return sendError(400, error.message);
-    }
-    
-    return sendError(500, "Failed to create booking.");
-  }
-};
-=======
-const { v4: uuidv4 } = require("uuid"); // För att generera unika ID:n
-const { sendResponse, sendError } = require("../../responses"); // För att skicka svar
-const { db } = require("../../services/db"); // För databasoperationer
-const { 
-  validateDates, 
-  validateBookingWithRoomTypes, 
-  calculateCostByNights,
-  TOTAL_ROOMS 
-} = require("../../services/roomService"); // För rum-validering och prissättning
-
-// Huvudfunktion som hanterar skapande av bokningar
-module.exports.handler = async (event) => {
-  // Hämta bokningsdata från förfrågan
-  const body = JSON.parse(event.body);
-  const { guests, roomTypes, checkIn, checkOut, guestName, email } = body;
-
-  try {
-    // Validera datum (inkommande kan inte vara i det förflutna)
-    if (!validateDates(checkIn, checkOut)) {
-      return sendError(400, "Invalid check-in or check-out dates.");
+    // 2. Check that all required fields are provided
+    if (!guests || !roomTypes || !guestName || !email) {
+      return sendError(400, "Missing required fields: guests, roomTypes, guestName, email");
     }
 
-    // Räkna totalt antal rum som gästen vill ha
-    const totalRoomsRequested = Object.values(roomTypes).reduce(
-      (sum, value) => sum + value,
-      0
-    );
-
-    // Kontrollera rumstillgänglighet om datum angivna
+    // 3. Validate dates (if provided)
     if (checkIn && checkOut) {
-      const totalAvailableRooms = await checkRoomAvailability(checkIn, checkOut);
+      const checkInDate = new Date(checkIn);
+      const checkOutDate = new Date(checkOut);
+      const today = new Date();
       
-      if (totalAvailableRooms < totalRoomsRequested) {
-        return sendError(
-          400,
-          "Not enough rooms available for the selected dates."
-        );
+      if (checkInDate < today) {
+        return sendError(400, "Check-in date cannot be in the past");
+      }
+      
+      if (checkOutDate <= checkInDate) {
+        return sendError(400, "Check-out date must be after check-in date");
       }
     }
 
-    // Validera att antal gäster matchar rumskapacitet
-    if (!validateBookingWithRoomTypes(guests, roomTypes)) {
-      return sendError(400, "Invalid number of guests or room types.");
+    // 4. Calculate total number of rooms
+    const totalRooms = Object.values(roomTypes).reduce((sum, value) => sum + value, 0);
+
+    // 5. Check room capacity
+    let totalCapacity = 0;
+    for (const roomType in roomTypes) {
+      const capacity = roomType === 'single' ? 1 : roomType === 'double' ? 2 : 3;
+      totalCapacity += capacity * roomTypes[roomType];
+    }
+    
+    if (totalCapacity < guests) {
+      return sendError(400, "Not enough room capacity for all guests");
     }
 
-    // Generera unikt boknings-ID
+    // 6. Generate unique booking ID
     const bookingId = uuidv4();
 
-    // Beräkna total kostnad
-    let totalCost;
+    // 7. Calculate total cost
+    let totalCost = 0;
     if (checkIn && checkOut) {
-      // Beräkna baserat på antal nätter
-      totalCost = calculateCostByNights(roomTypes, checkIn, checkOut);
+      // Calculate based on number of nights
+      const nights = Math.ceil((new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24));
+      for (const roomType in roomTypes) {
+        const price = roomType === 'single' ? 500 : roomType === 'double' ? 1000 : 1500;
+        totalCost += price * roomTypes[roomType] * nights;
+      }
     } else {
-      // Om inga datum angivna, beräkna för 1 natt
-      totalCost = Object.entries(roomTypes).reduce((sum, [type, quantity]) => {
-        const roomCost = type === 'single' ? 500 : type === 'double' ? 1000 : 1500;
-        return sum + (roomCost * quantity);
-      }, 0);
+      // If no dates, calculate for 1 night
+      for (const roomType in roomTypes) {
+        const price = roomType === 'single' ? 500 : roomType === 'double' ? 1000 : 1500;
+        totalCost += price * roomTypes[roomType];
+      }
     }
 
-    // Skapa bokningsobjekt
+    // 8. Create booking object
     const booking = {
-      bookingId,        // Unikt ID för bokningen
-      guests,           // Antal gäster
-      roomTypes,        // Rumtyper (single, double, suite)
-      totalRooms: totalRoomsRequested,  // Totalt antal rum
-      checkIn,          // Incheckningsdatum
-      checkOut,         // Utcheckningsdatum
-      guestName,        // Gästens namn
-      email,            // Gästens e-post
-      totalCost,        // Total kostnad
+      bookingId,
+      guests,
+      roomTypes,
+      totalRooms,
+      checkIn,
+      checkOut,
+      guestName,
+      email,
+      totalCost,
+      status: 'confirmed',
+      createdAt: new Date().toISOString()
     };
 
-    // Spara bokningen i databasen
+    // 9. Save to database
     await db.put({
-      TableName: "bookings",
+      TableName: process.env.BOOKINGS_TABLE || "hotel-bookings-axile",
       Item: booking,
     }).promise();
 
-    // Skicka framgångsrikt svar
+    // 10. Send response
     return sendResponse({
       message: "Booking created successfully!",
       bookingId,
       guests,
-      totalRooms: totalRoomsRequested,
+      totalRooms,
       roomTypes,
       checkIn,
       checkOut,
@@ -121,40 +103,7 @@ module.exports.handler = async (event) => {
     });
     
   } catch (error) {
-    // Logga fel och skicka felmeddelande
     console.error("Error creating booking:", error);
-    return sendError(500, "Error processing the booking.");
+    return sendError(500, "An error occurred while processing the booking.");
   }
 };
-
-// Funktion för att kontrollera rumstillgänglighet för angivna datum
-async function checkRoomAvailability(checkIn, checkOut) {
-  // Konvertera datum till ISO-format
-  const checkInDate = new Date(checkIn).toISOString();
-  const checkOutDate = new Date(checkOut).toISOString();
-
-  // Sök i databasen efter befintliga bokningar som överlappar med angivna datum
-  const result = await db.scan({
-    TableName: "bookings",
-    FilterExpression: "(checkIn <= :checkOut AND checkOut >= :checkIn)",
-    ExpressionAttributeValues: {
-      ":checkIn": checkInDate,
-      ":checkOut": checkOutDate,
-    },
-  }).promise();
-
-  // Räkna totalt antal bokade rum
-  let totalRoomsBooked = 0;
-  result.Items.forEach((booking) => {
-    const roomCount = Object.values(booking.roomTypes).reduce(
-      (sum, value) => sum + value,
-      0
-    );
-    totalRoomsBooked += roomCount;
-  });
-
-  // Beräkna tillgängliga rum (totalt antal rum minus bokade rum)
-  const totalAvailableRooms = TOTAL_ROOMS - totalRoomsBooked;
-  return totalAvailableRooms;
-}
->>>>>>> 3bca9fc249bd724be58b61d76f8464d7f8ea7459

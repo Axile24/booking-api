@@ -1,23 +1,37 @@
+/**
+ * Update Booking Handler
+ * This function updates an existing booking
+ * It allows changing guest details, room types, dates, and status
+ */
+
 const { sendResponse, sendError } = require("../../responses");
 const { db } = require("../../services/db");
 
+/**
+ * Main handler function that updates a booking
+ * @param {Object} event - The incoming request event from API Gateway
+ * @returns {Object} - Response object with updated booking or error
+ */
 module.exports.handler = async (event) => {
+  console.log("Updating booking...");
+  
   try {
-    console.log('UpdateBooking event:', JSON.stringify(event, null, 2));
-    
-    // Get booking ID from path parameters
+    // Get booking ID from the URL path (e.g., /bookings/123)
     const bookingId = event.pathParameters?.id;
     
+    // Check if booking ID was provided
     if (!bookingId) {
       return sendError(400, "Booking ID is required");
     }
     
-    // Parse request body
+    // Parse the request body to get update data
     const body = JSON.parse(event.body || '{}');
     
-    // Check if booking exists
+    console.log(`Updating booking: ${bookingId}`);
+    
+    // Check if booking exists before updating
     const existingBooking = await db.get({
-      TableName: "bookings",
+      TableName: process.env.BOOKINGS_TABLE || "hotel-bookings-axile",
       Key: {
         bookingId: bookingId
       }
@@ -27,21 +41,27 @@ module.exports.handler = async (event) => {
       return sendError(404, "Booking not found");
     }
     
-    // Prepare update expression
+    // Prepare the update expression (what fields to update)
     let updateExpression = 'SET updatedAt = :updatedAt';
     let expressionAttributeValues = {
       ':updatedAt': new Date().toISOString()
     };
+    let expressionAttributeNames = {};
     
-    // Add fields to update if provided
+    // Add fields to update if they are provided in the request
     if (body.guestName) {
       updateExpression += ', guestName = :guestName';
-      expressionAttributeValues[':guestName'] = body.guestName;
+      expressionAttributeValues[':guestName'] = body.guestName.trim();
     }
     
     if (body.email) {
+      // Basic email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(body.email)) {
+        return sendError(400, "Invalid email format");
+      }
       updateExpression += ', email = :email';
-      expressionAttributeValues[':email'] = body.email;
+      expressionAttributeValues[':email'] = body.email.toLowerCase().trim();
     }
     
     if (body.guests) {
@@ -65,32 +85,45 @@ module.exports.handler = async (event) => {
     }
     
     if (body.status) {
-      updateExpression += ', status = :status';
+      // Validate status values
+      const validStatuses = ['confirmed', 'cancelled', 'completed'];
+      if (!validStatuses.includes(body.status)) {
+        return sendError(400, `Invalid status. Must be one of: ${validStatuses.join(', ')}`);
+      }
+      updateExpression += ', #status = :status';
+      expressionAttributeNames['#status'] = 'status';
       expressionAttributeValues[':status'] = body.status;
     }
     
-    // Update booking in DynamoDB
-    const result = await db.update({
-      TableName: "bookings",
+    // Update the booking in DynamoDB
+    const updateParams = {
+      TableName: process.env.BOOKINGS_TABLE || "hotel-bookings-axile",
       Key: {
         bookingId: bookingId
       },
       UpdateExpression: updateExpression,
       ExpressionAttributeValues: expressionAttributeValues,
-      ReturnValues: 'ALL_NEW'
-    }).promise();
+      ReturnValues: 'ALL_NEW'  // Return the updated booking
+    };
     
+    // Only add ExpressionAttributeNames if we have any
+    if (Object.keys(expressionAttributeNames).length > 0) {
+      updateParams.ExpressionAttributeNames = expressionAttributeNames;
+    }
+    
+    const result = await db.update(updateParams).promise();
+    
+    console.log("Booking updated successfully");
+    
+    // Send successful response with updated booking
     return sendResponse({
       message: "Booking updated successfully",
       booking: result.Attributes
     });
     
   } catch (error) {
+    // Log error and send error response
     console.error('Error updating booking:', error);
-    return sendError(500, "Failed to update booking");
+    return sendError(500, "Failed to update booking. Please try again.");
   }
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> 3bca9fc249bd724be58b61d76f8464d7f8ea7459
