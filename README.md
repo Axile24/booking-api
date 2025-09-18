@@ -2,8 +2,6 @@
 
 Ett serverless boknings-API för Bonz.ai hotell byggt med AWS Lambda, API Gateway och DynamoDB med Node.js.
 
-> **Baserat på**: [marafabiana/hotel-booking-api](https://github.com/marafabiana/hotel-booking-api.git) struktur och implementation
-
 ## Om projektet
 
 Detta API låter gäster skapa, läsa, uppdatera och hantera hotellbokningar. Byggt med serverless arkitektur för automatisk skalning och kostnadseffektivitet.
@@ -23,14 +21,6 @@ Detta API låter gäster skapa, läsa, uppdatera och hantera hotellbokningar. By
 - **API Gateway**: RESTful API-slutpunkter
 - **DynamoDB**: NoSQL-databas för bokningar
 - **Serverless Framework**: Infrastruktur som kod
-
-## Rumstyper och prissättning
-
-| Rumtyp | Max gäster | Pris/natt |
-|--------|------------|-----------|
-| Enkel  | 1          | 500 SEK   |
-| Dubbel | 2          | 1000 SEK  |
-| Svit   | 3          | 1500 SEK  |
 
 ## Installation
 
