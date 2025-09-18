@@ -11,7 +11,14 @@
     "start": "serverless offline",
     "test": "echo \"No tests yet - add your tests here!\""
   },
-  "keywords": ["serverless", "aws", "lambda", "dynamodb", "booking", "hotel"],
+  "keywords": [
+    "serverless",
+    "aws",
+    "lambda",
+    "dynamodb",
+    "booking",
+    "hotel"
+  ],
   "author": "Axile24",
   "license": "MIT",
   "dependencies": {
@@ -20,6 +27,6 @@
   },
   "devDependencies": {
     "serverless": "^3.38.0",
-    "serverless-offline": "^13.3.0"
+    "serverless-offline": "^13.9.0"
   }
 }
