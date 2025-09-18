@@ -1,44 +1,49 @@
 /**
  * Response Helper Functions
  * These functions help format API responses consistently
- * Perfect for beginners to understand how API responses work
  */
 
-// Function to send successful responses
-function sendResponse(data, statusCode = 200) {
+const headers = {
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Credentials': true,
+};
+
+/**
+ * Sends a successful response (HTTP 200)
+ */
+function success(data) {
   return {
-    statusCode,  // HTTP status code (200 = OK, 201 = Created, etc.)
-    headers: {
-      'Content-Type': 'application/json',  // Tell the browser this is JSON data
-      'Access-Control-Allow-Origin': '*',  // Allow requests from any website (CORS)
-      'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
-      'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS'
-    },
-    body: JSON.stringify({  // Convert data to JSON string
-      data: data  // Wrap data in a "data" object
-    })
+    statusCode: 200,
+    headers,
+    body: JSON.stringify(data),
   };
 }
 
-// Function to send error responses
-function sendError(statusCode, message, error = null) {
+/**
+ * Sends a validation error response (HTTP 400)
+ */
+function validationError(message) {
   return {
-    statusCode,  // HTTP status code (400 = Bad Request, 500 = Server Error, etc.)
-    headers: {
-      'Content-Type': 'application/json',  // Tell the browser this is JSON data
-      'Access-Control-Allow-Origin': '*',  // Allow requests from any website (CORS)
-      'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
-      'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS'
-    },
-    body: JSON.stringify({  // Convert error message to JSON string
-      error: message,  // Main error message
-      ...(error && { details: error })  // Additional error information if available
-    })
+    statusCode: 400,
+    headers,
+    body: JSON.stringify({ message: message }),
   };
 }
 
-// Export functions so other files can use them
+/**
+ * Sends a server error response (HTTP 500)
+ */
+function error(message) {
+  return {
+    statusCode: 500,
+    headers,
+    body: JSON.stringify({ message: message }),
+  };
+}
+
 module.exports = {
-  sendResponse,  // Function to send successful responses
-  sendError      // Function to send error messages
+  success,
+  validationError,
+  error,
 };

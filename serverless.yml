@@ -1,7 +1,3 @@
-# Serverless Framework Configuration
-# This file tells AWS how to deploy your API
-# Perfect for beginners to understand serverless deployment
-
 service: booking-api
 
 frameworkVersion: '3'
@@ -16,7 +12,6 @@ provider:
   environment:
     BOOKINGS_TABLE: hotel-bookings-axile
   
-  # IAM permissions for DynamoDB access
   iam:
     role:
       statements:
@@ -31,9 +26,7 @@ provider:
           Resource:
             - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.BOOKINGS_TABLE}"
 
-# Define your API endpoints
 functions:
-  # Create a new booking
   createBooking:
     handler: functions/CreateBooking/handler.handler
     events:
@@ -42,7 +35,6 @@ functions:
           method: post
           cors: true
 
-  # Get all bookings
   getAllBookings:
     handler: functions/GetAllBookings/handler.handler
     events:
@@ -51,25 +43,30 @@ functions:
           method: get
           cors: true
 
-  # Get a specific booking by ID
-  getBooking:
-    handler: functions/GetBooking/handler.handler
+  getSingleBooking:
+    handler: functions/GetSingleBooking/handler.handler
     events:
       - http:
-          path: /bookings/{id}
+          path: /bookings/{bookingId}
           method: get
           cors: true
 
-  # Update a booking
   updateBooking:
     handler: functions/UpdateBooking/handler.handler
     events:
       - http:
-          path: /bookings/{id}
+          path: /bookings/{bookingId}
           method: put
           cors: true
 
-# AWS Resources (DynamoDB table)
+  deleteBooking:
+    handler: functions/DeleteBooking/handler.handler
+    events:
+      - http:
+          path: /bookings/{bookingId}
+          method: delete
+          cors: true
+
 resources:
   Resources:
     BookingsTable:
@@ -84,6 +81,6 @@ resources:
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
 
-# Development plugins
 plugins:
   - serverless-offline
+  

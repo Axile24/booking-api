@@ -1,22 +1,21 @@
-const { updateBooking } = require('../../services/bookingService');
+const { getBookingById } = require('../../services/bookingService');
 const { success, error } = require('../../responses');
 
 module.exports.handler = async (event) => {
   try {
     const bookingId = event.pathParameters.bookingId;
-    const body = JSON.parse(event.body);
-
+    
     if (!bookingId) {
       return error('Booking ID is missing');
     }
 
-    const updatedBooking = await updateBooking(bookingId, body);
+    const booking = await getBookingById(bookingId);
 
-    if (!updatedBooking) {
+    if (!booking) {
       return success({ message: 'Booking not found' });
     }
 
-    return success(updatedBooking);
+    return success(booking);
 
   } catch (e) {
     console.error(e);

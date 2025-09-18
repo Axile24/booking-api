@@ -1,7 +1,6 @@
 /**
  * Database Service
  * This file sets up the connection to AWS DynamoDB
- * Perfect for beginners to understand how database connections work
  */
 
 const AWS = require('aws-sdk');
@@ -14,7 +13,11 @@ AWS.config.update({
 // Create DynamoDB client
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-// Export the client so other files can use it
 module.exports = {
-  db: dynamodb
+  get: (params) => dynamodb.get(params).promise(),
+  scan: (params) => dynamodb.scan(params).promise(),
+  put: (params) => dynamodb.put(params).promise(),
+  query: (params) => dynamodb.query(params).promise(),
+  update: (params) => dynamodb.update(params).promise(),
+  delete: (params) => dynamodb.delete(params).promise(),
 };

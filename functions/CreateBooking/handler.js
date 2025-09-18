@@ -1,109 +1,39 @@
-/**
- * Create Booking Handler
- * This function creates a new hotel booking
- * Perfect for beginners to understand how API endpoints work
- */
-
-const { v4: uuidv4 } = require("uuid");
-const { sendResponse, sendError } = require("../../responses");
-const { db } = require("../../services/db");
+const { createBooking } = require('../../services/bookingService');
+const { validationError, success, error } = require('../../responses');
+const {
+  validateBookingWithRoomTypes,
+  calculateCostByNights
+} = require('../../services/roomService'); // ✅ NYTT: Importerar den nya servicen
 
 module.exports.handler = async (event) => {
   try {
-    // 1. Get data from the request
     const body = JSON.parse(event.body);
-    const { guests, roomTypes, checkIn, checkOut, guestName, email } = body;
 
-    // 2. Check that all required fields are provided
-    if (!guests || !roomTypes || !guestName || !email) {
-      return sendError(400, "Missing required fields: guests, roomTypes, guestName, email");
+    // Validering av obligatoriska fält
+    if (!body.guests || !body.roomTypes || !body.guestName || !body.email || !body.checkInDate || !body.checkOutDate) {
+      return validationError('Missing required fields: guests, roomTypes, guestName, email, checkInDate, checkOutDate');
     }
 
-    // 3. Validate dates (if provided)
-    if (checkIn && checkOut) {
-      const checkInDate = new Date(checkIn);
-      const checkOutDate = new Date(checkOut);
-      const today = new Date();
-      
-      if (checkInDate < today) {
-        return sendError(400, "Check-in date cannot be in the past");
-      }
-      
-      if (checkOutDate <= checkInDate) {
-        return sendError(400, "Check-out date must be after check-in date");
-      }
+    // 1. Validera att antalet gäster ryms i rumskapaciteten
+    const totalGuests = body.guests.length;
+    const isValidCapacity = validateBookingWithRoomTypes(totalGuests, body.roomTypes);
+
+    if (!isValidCapacity) {
+      return validationError('The number of guests does not fit in the room capacity. Please adjust your room selection.');
     }
 
-    // 4. Calculate total number of rooms
-    const totalRooms = Object.values(roomTypes).reduce((sum, value) => sum + value, 0);
+    // 2. Beräkna totalpris med den nya servicen
+    const totalPrice = calculateCostByNights(body.roomTypes, body.checkInDate, body.checkOutDate);
 
-    // 5. Check room capacity
-    let totalCapacity = 0;
-    for (const roomType in roomTypes) {
-      const capacity = roomType === 'single' ? 1 : roomType === 'double' ? 2 : 3;
-      totalCapacity += capacity * roomTypes[roomType];
-    }
-    
-    if (totalCapacity < guests) {
-      return sendError(400, "Not enough room capacity for all guests");
-    }
-
-    // 6. Generate unique booking ID
-    const bookingId = uuidv4();
-
-    // 7. Calculate total cost
-    let totalCost = 0;
-    if (checkIn && checkOut) {
-      // Calculate based on number of nights
-      const nights = Math.ceil((new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24));
-      for (const roomType in roomTypes) {
-        const price = roomType === 'single' ? 500 : roomType === 'double' ? 1000 : 1500;
-        totalCost += price * roomTypes[roomType] * nights;
-      }
-    } else {
-      // If no dates, calculate for 1 night
-      for (const roomType in roomTypes) {
-        const price = roomType === 'single' ? 500 : roomType === 'double' ? 1000 : 1500;
-        totalCost += price * roomTypes[roomType];
-      }
-    }
-
-    // 8. Create booking object
-    const booking = {
-      bookingId,
-      guests,
-      roomTypes,
-      totalRooms,
-      checkIn,
-      checkOut,
-      guestName,
-      email,
-      totalCost,
-      status: 'confirmed',
-      createdAt: new Date().toISOString()
+    // 3. Skapa det slutliga bokningsdataobjektet
+    const finalBookingData = {
+      ...body,
+      totalPrice: totalPrice,
     };
 
-    // 9. Save to database
-    await db.put({
-      TableName: process.env.BOOKINGS_TABLE || "hotel-bookings-axile",
-      Item: booking,
-    }).promise();
-
-    // 10. Send response
-    return sendResponse({
-      message: "Booking created successfully!",
-      bookingId,
-      guests,
-      totalRooms,
-      roomTypes,
-      checkIn,
-      checkOut,
-      guestName,
-      totalCost,
-    });
-    
-  } catch (error) {
-    console.error("Error creating booking:", error);
-    return sendError(500, "An error occurred while processing the booking.");
+    const booking = await createBooking(finalBookingData);
+    return success(booking);
+  } catch (e) {
+    return error(e.message);
   }
 };

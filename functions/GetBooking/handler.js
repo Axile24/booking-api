@@ -8,7 +8,7 @@ const { sendResponse, sendError } = require("../../responses");
 const { db } = require("../../services/db");
 
 /**
- * Main handler function that retrieves a specific booking
+ * Handler handler function that retrieves a specific booking
  * @param {Object} event - The incoming request event from API Gateway
  * @returns {Object} - Response object with booking details or error
  */
