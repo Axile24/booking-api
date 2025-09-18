@@ -1,55 +1,37 @@
-/**
- * Get Single Booking Handler
- * This function retrieves a specific booking by its ID
- * Useful for viewing booking details or checking booking status
- */
-
+// Enkel funktion för att hämta en bokning
 const { sendResponse, sendError } = require("../../responses");
 const { db } = require("../../services/db");
 
-/**
- * Main handler function that retrieves a specific booking
- * @param {Object} event - The incoming request event from API Gateway
- * @returns {Object} - Response object with booking details or error
- */
 module.exports.handler = async (event) => {
-  console.log("Retrieving booking...");
-  
   try {
-    // Get booking ID from the URL path (e.g., /bookings/123)
+    // Hämta ID från URL
     const bookingId = event.pathParameters?.id;
     
-    // Check if booking ID was provided
+    // Kontrollera att ID finns
     if (!bookingId) {
-      return sendError(400, "Booking ID is required");
+      return sendError(400, "Boknings-ID saknas");
     }
     
-    console.log(`Looking for booking: ${bookingId}`);
-    
-    // Get booking from DynamoDB
+    // Hämta bokning från databas
+    const tableName = process.env.BOOKINGS_TABLE || "hotel-bookings-axile";
     const result = await db.get({
-      TableName: process.env.BOOKINGS_TABLE || "hotel-bookings-axile",
-      Key: {
-        bookingId: bookingId
-      }
+      TableName: tableName,
+      Key: { bookingId }
     }).promise();
     
-    // Check if booking was found
+    // Kontrollera om bokning finns
     if (!result.Item) {
-      return sendError(404, "Booking not found");
+      return sendError(404, "Bokning hittades inte");
     }
     
-    console.log("Booking found successfully");
-    
-    // Send successful response with booking details
+    // Skicka tillbaka bokningen
     return sendResponse({
-      message: "Booking retrieved successfully",
+      message: "Bokning hämtad",
       booking: result.Item
     });
     
   } catch (error) {
-    // Log error and send error response
-    console.error('Error getting booking:', error);
-    return sendError(500, "Failed to retrieve booking. Please try again.");
+    console.error("Fel:", error);
+    return sendError(500, "Något gick fel");
   }
 };
