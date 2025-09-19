@@ -1,5 +1,8 @@
 Hotel Booking API
 
+PRESENTATION:
+  https://youtu.be/5oi9C7gwSaU 
+
 A simple serverless API for managing hotel bookings, built with AWS Lambda and DynamoDB.
 
 
