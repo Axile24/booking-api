@@ -13,20 +13,10 @@ A simple serverless API for managing hotel bookings, built with AWS Lambda and D
 - REST API design
 - JavaScript/Node.js
 
-## Functionality
 
-- **Create** new hotel bookings (with room validation)
-- **View** all bookings
-- **Get** a specific booking by ID
-- **Update** existing bookings (with room and guest validation)
 
 ## Rumtyper och Priser
-
-| Rumtyp | Max Gäster | Pris per natt |
-|--------|-----------|---------------|
-| `single` (Enkelrum) | 1 | 500 SEK |
-| `double` (Dubbelrum) | 2 | 1000 SEK |
-| `suite` (Svit) | 3 | 1500 SEK |
+Kolla postman
 
 **Affärslogik:**
 - Det går att ha olika typer av rum i en bokning
@@ -35,12 +25,12 @@ A simple serverless API for managing hotel bookings, built with AWS Lambda and D
 - Totalpriset beräknas automatiskt baserat på valda rumtyper
 
 **Tekniska Krav (Uppfyllda):**
-- ✅ Serverless Framework
-- ✅ API Gateway
-- ✅ AWS Lambda
-- ✅ DynamoDB
-- ✅ Felhantering för DynamoDB
-- ✅ Validering av body-värden
+-  Serverless Framework
+- API Gateway
+- AWS Lambda
+- DynamoDB
+- Felhantering för DynamoDB
+-  Validering av body-värden
 
 Structure
 Setup & Installation
@@ -62,13 +52,12 @@ Setup & Installation
 
 ## API Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/bookings` | Create a new booking |
-| GET | `/bookings` | Get all bookings |
-| GET | `/bookings/{id}` | Get specific booking |
-| PUT | `/bookings/{id}` | Update booking |
-| DELETE | `/bookings/{id}` | Delete booking |
+Method EndpointDescription
+ POST | `/bookings` | Create a new booking |
+ GET | `/bookings` | Get all bookings |
+ GET | `/bookings/{id}` | Get specific booking |
+ PUT | `/bookings/{id}` | Update booking |
+ DELETE | `/bookings/{id}` | Delete booking |
 
 ## Exempel - Skapa Bokning
 
