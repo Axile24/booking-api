@@ -5,7 +5,7 @@ PRESENTATION:
 
 A simple serverless API for managing hotel bookings, built with AWS Lambda and DynamoDB.
 
-
+## Features
 
 - Serverless 
 - AWS Lambda functions
@@ -13,10 +13,34 @@ A simple serverless API for managing hotel bookings, built with AWS Lambda and D
 - REST API design
 - JavaScript/Node.js
 
-- **Create** new hotel bookings
+## Functionality
+
+- **Create** new hotel bookings (with room validation)
 - **View** all bookings
 - **Get** a specific booking by ID
-- **Update** existing bookings
+- **Update** existing bookings (with room and guest validation)
+
+## Rumtyper och Priser
+
+| Rumtyp | Max Gäster | Pris per natt |
+|--------|-----------|---------------|
+| `single` (Enkelrum) | 1 | 500 SEK |
+| `double` (Dubbelrum) | 2 | 1000 SEK |
+| `suite` (Svit) | 3 | 1500 SEK |
+
+**Affärslogik:**
+- Det går att ha olika typer av rum i en bokning
+- Antal gäster måste stämma överens med rumkapaciteten
+- Exempel: 3 personer behöver boka antingen en svit ELLER ett enkelrum + ett dubbelrum
+- Totalpriset beräknas automatiskt baserat på valda rumtyper
+
+**Tekniska Krav (Uppfyllda):**
+- ✅ Serverless Framework
+- ✅ API Gateway
+- ✅ AWS Lambda
+- ✅ DynamoDB
+- ✅ Felhantering för DynamoDB
+- ✅ Validering av body-värden
 
 Structure
 Setup & Installation
@@ -36,26 +60,69 @@ Setup & Installation
    npm run offline
    ```
 
-API Endpoints
+## API Endpoints
 
-
+| Method | Endpoint | Description |
+|--------|----------|-------------|
 | POST | `/bookings` | Create a new booking |
 | GET | `/bookings` | Get all bookings |
 | GET | `/bookings/{id}` | Get specific booking |
 | PUT | `/bookings/{id}` | Update booking |
+| DELETE | `/bookings/{id}` | Delete booking |
 
+## Exempel - Skapa Bokning
 
-```bash create B
+```bash
 curl -X POST https://your-api-url/bookings \
   -H "Content-Type: application/json" \
   -d '{
     "guests": 2,
     "roomTypes": {"double": 1},
-    "checkIn": "2025-02-15",
-    "checkOut": "2025-02-17",
     "guestName": "John Doe",
     "email": "john@example.com"
   }'
+```
+
+**Response - Lyckad bokning:**
+- `totalCost`: 1000 SEK (1 dubbelrum)
+- `totalCapacity`: 2 gäster
+- Validering: ✅ 2 gäster passar i 2 platser
+
+## Exempel - Uppdatera Bokning
+
+```bash
+curl -X PUT https://your-api-url/bookings/{id} \
+  -H "Content-Type: application/json" \
+  -d '{
+    "guests": 5,
+    "roomTypes": {"double": 1, "suite": 1}
+  }'
+```
+
+**Response - Uppdaterad bokning:**
+- `totalCost`: 2500 SEK (1 dubbelrum + 1 svit = 1000 + 1500)
+- `totalCapacity`: 5 gäster (2 + 3)
+- Validering: ✅ 5 gäster passar i 5 platser
+
+## Exempel - Valideringsfel
+
+```bash
+# Försök boka 5 gäster i 1 enkelrum
+curl -X POST https://your-api-url/bookings \
+  -H "Content-Type: application/json" \
+  -d '{
+    "guests": 5,
+    "roomTypes": {"single": 1},
+    "guestName": "Jane Doe",
+    "email": "jane@example.com"
+  }'
+```
+
+**Error Response:**
+```json
+{
+  "error": "För många gäster! 5 gäster men endast plats för 1 gäster i de valda rummen"
+}
 ```
 
 URL:
