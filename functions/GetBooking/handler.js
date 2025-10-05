@@ -14,10 +14,16 @@ module.exports.handler = async (event) => {
     
     // Hämta bokning från databas
     const tableName = process.env.BOOKINGS_TABLE || "hotel-bookings-axile";
-    const result = await db.get({
-      TableName: tableName,
-      Key: { bookingId }
-    }).promise();
+    let result;
+    try {
+      result = await db.get({
+        TableName: tableName,
+        Key: { bookingId }
+      }).promise();
+    } catch (dbError) {
+      console.error("DynamoDB fel:", dbError);
+      return sendError(500, "Databasfel: Kunde inte hämta bokning");
+    }
     
     // Kontrollera om bokning finns
     if (!result.Item) {
@@ -31,7 +37,7 @@ module.exports.handler = async (event) => {
     });
     
   } catch (error) {
-    console.error("Fel:", error);
-    return sendError(500, "Något gick fel");
+    console.error("Serverfel:", error);
+    return sendError(500, "Serverfel vid hämtning av bokning");
   }
 };

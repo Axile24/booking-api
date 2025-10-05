@@ -14,11 +14,17 @@ module.exports.handler = async (event) => {
     
     // Ta bort från databas
     const tableName = process.env.BOOKINGS_TABLE || "hotel-bookings-axile";
-    const result = await db.delete({
-      TableName: tableName,
-      Key: { bookingId: id },
-      ReturnValues: 'ALL_OLD'
-    }).promise();
+    let result;
+    try {
+      result = await db.delete({
+        TableName: tableName,
+        Key: { bookingId: id },
+        ReturnValues: 'ALL_OLD'
+      }).promise();
+    } catch (dbError) {
+      console.error("DynamoDB fel:", dbError);
+      return sendError(500, "Databasfel: Kunde inte ta bort bokning");
+    }
     
     // Kontrollera om bokning fanns
     if (!result.Attributes) {
@@ -32,6 +38,7 @@ module.exports.handler = async (event) => {
     });
     
   } catch (error) {
-    return sendError(500, "Fel");
+    console.error("Serverfel:", error);
+    return sendError(500, "Serverfel vid borttagning av bokning");
   }
 };
