@@ -75,7 +75,7 @@ curl -X POST https://your-api-url/bookings \
 **Response - Lyckad bokning:**
 - `totalCost`: 1000 SEK (1 dubbelrum)
 - `totalCapacity`: 2 gäster
-- Validering: ✅ 2 gäster passar i 2 platser
+- Validering: 2 gäster passar i 2 platser
 
 ## Exempel - Uppdatera Bokning
 
@@ -91,7 +91,7 @@ curl -X PUT https://your-api-url/bookings/{id} \
 **Response - Uppdaterad bokning:**
 - `totalCost`: 2500 SEK (1 dubbelrum + 1 svit = 1000 + 1500)
 - `totalCapacity`: 5 gäster (2 + 3)
-- Validering: ✅ 5 gäster passar i 5 platser
+- Validering:  5 gäster passar i 5 platser
 
 ## Exempel - Valideringsfel
 
